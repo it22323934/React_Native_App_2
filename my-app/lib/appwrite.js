@@ -69,6 +69,8 @@ export const signIn = async (email, password) => {
   }
 };
 
+
+//get the current user
 export const getCurrentUser = async () => {
   try {
     const currentAccount = await account.get();
@@ -81,4 +83,17 @@ export const getCurrentUser = async () => {
     if (!currentUser) throw Error;
     return currentUser.documents[0];
   } catch (error) {}
+};
+
+//get all posts
+export const getPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.videoCollectionId
+    );
+    return posts.documents;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
