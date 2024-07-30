@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "./appwrite";
+import { Alert } from "react-native";
 
 const useAppwrite = (fn) => {
   const [data, setDate] = useState([]);

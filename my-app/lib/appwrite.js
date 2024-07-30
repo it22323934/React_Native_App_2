@@ -6,6 +6,7 @@ import {
   ID,
   Query,
 } from "react-native-appwrite";
+import { Alert } from "react-native";
 
 export const appwriteConfig = {
   endpoint: "https://cloud.appwrite.io/v1",
@@ -63,6 +64,8 @@ export const createUser = async (email, password, username) => {
 export const signIn = async (email, password) => {
   try {
     const session = await account.createEmailPasswordSession(email, password);
+
+
     return session;
   } catch (error) {
     throw new Error(error);
@@ -111,3 +114,41 @@ export const getLatestPosts = async () => {
     throw new Error(error);
   }
 };
+
+//search posts
+export const searchPosts = async (query) => {
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.videoCollectionId,
+      [Query.search('title',query)]
+    );
+    if (!posts) throw new Error("No posts found");
+    return posts.documents;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+// get user posts
+export const GetUserPosts = async (userId) => {
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.videoCollectionId,
+      [Query.equal('users',userId)]
+    );
+    if (!posts) throw new Error("No posts found");
+    return posts.documents;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const signOut = async () => {
+  try {
+    const session=await account.deleteSession("current");
+    return session;
+  } catch (error) {
+    
+  }
+}
